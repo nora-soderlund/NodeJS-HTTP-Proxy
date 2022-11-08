@@ -10,7 +10,7 @@ const server = http.createServer((request, response) => {
     const host = request.headers.host;
     const url = request.url.toLowerCase();
 
-    console.log(`${remoteAddress} ${method} ${url}`);
+    console.log(`${remoteAddress} ${method} ${url} for ${host} ${url}`);
 
     if(!host || !host.length) {
         console.warn(`${remoteAddress} ${method} ${url}: missing HOST header`);
