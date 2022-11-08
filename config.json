@@ -1,0 +1,6 @@
+{
+    "allowUnknownHost": false,
+    "allowedHosts": [ "ridetracker.app", "localhost" ],
+
+    "logs": "./logs/"
+}
