@@ -18,7 +18,7 @@ const server = http.createServer((request, response) => {
         return response.end();
     }
 
-    const subhost = host.substring(0, subhost.indexOf('.'));
+    const subhost = host.substring(0, host.indexOf('.'));
 
     // serve public index
     if(([ "ridetracker.app", "localhost" ]).includes(url) || ([ "www" ]).includes(subhost)) {
