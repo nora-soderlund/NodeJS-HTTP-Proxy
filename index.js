@@ -43,7 +43,7 @@ const server = http.createServer((request, response) => {
 
     console.log(`${remoteAddress} ${method} ${url}: missing handler!`);
 
-    request.end();
+    response.end();
 });
  
 server.listen(80);
