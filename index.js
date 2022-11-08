@@ -60,7 +60,7 @@ const server = http.createServer((request, response) => {
         if(config.allowedHosts.includes(url.hostname) || ([ "www" ]).includes(subhost)) {
             console.log(`${remoteAddress} ${method} ${url.href}: serving public index`);
 
-            return proxy.web(request, response, { target: "http://localhost:81" });
+            return proxy.web(request, response, { target: "http://localhost:83" });
         }
         
         // serve public api
@@ -80,7 +80,7 @@ const server = http.createServer((request, response) => {
         if(config.allowUnknownHost) {
             console.log(`${remoteAddress} ${method} ${url.href}: serving public index with allowUnknownHosts rule`);
 
-            return proxy.web(request, response, { target: "http://localhost:81" });
+            return proxy.web(request, response, { target: "http://localhost:83" });
         }
 
         console.log(`${remoteAddress} ${method} ${url.href}: missing handler!`);
