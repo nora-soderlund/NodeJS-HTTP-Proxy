@@ -21,7 +21,7 @@ const server = http.createServer((request, response) => {
     const subhost = host.substring(0, host.indexOf('.'));
 
     // serve public index
-    if(([ "ridetracker.app", "localhost" ]).includes(url) || ([ "www" ]).includes(subhost)) {
+    if(([ "ridetracker.app", "localhost" ]).includes(host) || ([ "www" ]).includes(subhost)) {
         console.log(`${remoteAddress} ${method} ${url}: serving public index`);
 
         return proxy.web(request, response, { target: "http://localhost:81" });
