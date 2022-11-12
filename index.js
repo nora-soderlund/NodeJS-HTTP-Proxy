@@ -55,13 +55,6 @@ const server = http.createServer((request, response) => {
         }
 
         const subhost = url.hostname.substring(0, url.hostname.indexOf('.'));
-
-        // serve public index
-        if(config.allowedHosts.includes(url.hostname) || ([ "www" ]).includes(subhost)) {
-            console.log(`${remoteAddress} ${method} ${url.href}: serving public index`);
-
-            return proxy.web(request, response, { target: "http://localhost:83" });
-        }
         
         // serve public api
         if(([ "api" ]).includes(subhost)) {
@@ -75,6 +68,13 @@ const server = http.createServer((request, response) => {
             console.log(`${remoteAddress} ${method} ${url.href}: serving demo api`);
 
             return proxy.web(request, response, { target: "http://localhost:82" });
+        }
+
+        // serve public index
+        if(config.allowedHosts.includes(url.hostname) || ([ "www" ]).includes(subhost)) {
+            console.log(`${remoteAddress} ${method} ${url.href}: serving public index`);
+
+            return proxy.web(request, response, { target: "http://localhost:83" });
         }
 
         if(config.allowUnknownHost) {
