@@ -5,6 +5,8 @@ import { URL } from "url";
 
 import fs, { write } from "fs";
 
+import Database from "./app/Database.js";
+
 const config = JSON.parse(fs.readFileSync("./config.json"));
 
 const proxy = httpProxy.createProxyServer({});
@@ -40,11 +42,25 @@ proxy.on("error", (error, request, response) => {
 });
  
 const server = http.createServer((request, response) => {
+    const url = new URL(request.url, `http://${request.headers.host}`);
+
+    try {
+        Database.queryAsync(`INSERT INTO requests (address, method, url, referer, \`user-agent\`, timestamp) VALUES (
+            ${Database.connection.escape(request.socket.remoteAddress)},
+            ${Database.connection.escape(request.method)},
+            ${Database.connection.escape(`http://${request.headers.host}${request.url}`)},
+            ${Database.connection.escape(request.headers["referer"])},
+            ${Database.connection.escape(request.headers["user-agent"])},
+            ${Database.connection.escape(Date.now())}
+        )`);
+    }
+    catch(error) {
+        writeError(request, "log_error", error);
+    }
+
     try {
         const method = request.method;
         const remoteAddress = request.socket.remoteAddress;
-
-        const url = new URL(request.url, `http://${request.headers.host}`);
 
         if(!url.hostname || !url.hostname.length) {
             console.warn(`${remoteAddress} ${method} ${url.href}: missing HOST header`);
@@ -94,6 +110,8 @@ const server = http.createServer((request, response) => {
     }
 });
  
-server.listen(80);
-
-console.log("Listening to port 80");
+Database.connectAsync(config.database, config.logs).then(() => {
+    server.listen(80);
+    
+    console.log("Listening to port 80");
+});
