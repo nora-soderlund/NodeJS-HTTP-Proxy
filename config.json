@@ -1,13 +1,34 @@
 {
-    "allowUnknownHost": false,
-    "allowedHosts": [ "ridetracker.app", "localhost" ],
+    "port": 80,
+    
+    "rules": {
+        "allowed-hosts": [ "nora-soderlund.se", "ridetracker.app", "localhost" ]
+    },
 
-    "logs": "./logs/",
+    "routes": [
+        {
+            "origin": [ "nora-soderlund.localhost", "nora-soderlund.se", "www.nora-soderlund.se" ],
+            "target": "http://localhost:3000"
+        },
 
-    "database": {
-        "host": "127.0.0.1",
-        "user": "root",
-        "password": "password",
-        "database": "ridetracker_logs"
-    }
+        {
+            "origin": [ "api.nora-soderlund.localhost", "api.nora-soderlund.se" ],
+            "target": "http://localhost:3001"
+        },
+
+        {
+            "origin": [ "api.ridetracker.localhost", "api.ridetracker.app" ],
+            "target": "http://localhost:81"
+        },
+        
+        {
+            "origin": [ "demo.ridetracker.localhost", "demo.ridetracker.app" ],
+            "target": "http://localhost:82"
+        },
+        
+        {
+            "origin": [ "ridetracker.localhost", "ridetracker.app", "www.ridetracker.app" ],
+            "target": "http://localhost:83"
+        }
+    ]
 }
