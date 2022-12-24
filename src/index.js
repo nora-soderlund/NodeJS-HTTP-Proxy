@@ -32,7 +32,12 @@ const server = http.createServer((request, response) => {
             return response.end();
         }
 
-        const route = config.routes.find((host) => host.origin == url.hostname);
+        const route = config.routes.find((host) => {
+            if(typeof host.origin == "string")
+                return host.origin == url.hostname;
+
+            return host.origin.includes(url.hostname);
+        });
 
         if(!route) {
             console.error(`${remoteAddress} ${method} ${url.hostname}: missing route`);
