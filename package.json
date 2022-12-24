@@ -1,14 +1,14 @@
 {
-    "name": "ridetrackerproxy",
+    "name": "nodejs-http-proxy",
     "version": "1.0.0",
-    "description": "",
+    "description": "Sets up a HTTP listener on one single public port that you can then route to another internal port.",
     "main": "index.js",
     "type": "module",
     "scripts": {
         "start": "node src/index.js",
         "dev": "nodemon src/index.js"
     },
-    "author": "",
+    "author": "Nora Söderlund",
     "license": "ISC",
     "dependencies": {
         "http-proxy": "^1.18.1"
