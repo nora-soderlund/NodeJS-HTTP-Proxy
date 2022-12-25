@@ -7,20 +7,14 @@ Sets up a HTTP listener on one single public port that you can then route to ano
 git clone https://github.com/nora-soderlund/NodeJS-HTTP-Proxy
 ```
 2. Set up config.json as seen in the examples below.
-3. Install the packages
+3. Install the packages and run the start script:
 ```npm
 npm install
-```
-4. Run with node or nodemon:
-```bat
 npm run start
-```
-```bat
-npm run dev
 ```
 
 ## Example
-For a plain web server with a seperate API http://localhost and and http://api.localhost:
+For http://localhost and http://api.localhost to 2 different web servers:
 ```json
 {
     "port": 80,
