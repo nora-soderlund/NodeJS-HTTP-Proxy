@@ -41,6 +41,8 @@ export default class Process {
         catch(error) {
             this.#error(`process failed to start: ${error}`);
 
+            this.start(attempt++);
+            
             return;
         }
 
