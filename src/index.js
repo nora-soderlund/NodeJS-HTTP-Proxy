@@ -1,55 +1,13 @@
-import http from "http";
-import httpProxy from "http-proxy";
-import { URL } from "url";
-import fs from "fs";
+import Proxy from "./App/Proxy.js";
+import Process from "./App/Process.js";
 
-const config = JSON.parse(fs.readFileSync("./config.json"));
-const proxy = httpProxy.createProxyServer({});
+import config from "./../config.json" assert { type: "json" };
 
-proxy.on("error", (error, request, response) => {
-    console.error(error);
+config.processes.forEach((settings, index) => {
+    const process = new Process(index, settings.command, settings.options, settings.rules);
 
-    try {
-        response.writeHead(500);
-    
-        response.end();
-    }
-    catch(error) {
-        console.error("Failed to end response!");
-    }
-});
- 
-const server = http.createServer((request, response) => {
-    try {
-        const url = new URL(request.url, `http://${request.headers.host}`);
-
-        const method = request.method;
-        const remoteAddress = request.socket.remoteAddress;
-
-        if(!url.hostname || !url.hostname.length) {
-            console.error(`${remoteAddress} ${method} ${url.hostname}: missing HOST header`);
-
-            return response.end();
-        }
-
-        const route = config.routes.find((host) => {
-            if(typeof host.origin == "string")
-                return host.origin == url.hostname;
-
-            return host.origin.includes(url.hostname);
-        });
-
-        if(!route) {
-            console.error(`${remoteAddress} ${method} ${url.hostname}: missing route`);
-
-            return response.end();
-        }
-
-        return proxy.web(request, response, { target: route.target });
-    }
-    catch(error) {
-        console.error(error);
-    }
+    process.start();
 });
 
-server.listen(config.port);
+const proxy = new Proxy(config.port, config.routes);
+proxy.start();
