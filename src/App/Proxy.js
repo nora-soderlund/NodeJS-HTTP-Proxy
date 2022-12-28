@@ -8,9 +8,9 @@ export default class Proxy {
         this.port = port;
         this.routes = routes;
 
-        const proxy = httpProxy.createProxyServer({});
+        this.proxy = httpProxy.createProxyServer({});
 
-        proxy.on("error", (error, request, response) => {
+        this.proxy.on("error", (error, request, response) => {
             console.error(error);
 
             try {
@@ -51,7 +51,7 @@ export default class Proxy {
                     return response.end();
                 }
 
-                return proxy.web(request, response, { target: route.target });
+                return this.proxy.web(request, response, { target: route.target });
             }
             catch(error) {
                 console.error(error);
