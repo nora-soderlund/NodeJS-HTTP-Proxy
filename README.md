@@ -6,15 +6,15 @@ Sets up a HTTP listener on one single public port that you can then route to ano
 ```git
 git clone https://github.com/nora-soderlund/NodeJS-HTTP-Proxy
 ```
-2. Set up config.json as seen in the examples below.
+2. Set up config.json in the root directory as seen in the [examples](#examples) below.
 3. Install the packages and run the start script:
 ```npm
 npm install
 npm run start
 ```
 
-## Example
-For http://localhost and http://api.localhost to 2 different servers:
+## Examples
+For http://localhost and http://api.localhost to 2 different web servers:
 ```json
 {
     "port": 80,
@@ -36,7 +36,7 @@ For http://localhost and http://api.localhost to 2 different servers:
 
 ```
 
-For two domains on a single server, e.g. https://nora-soderlund.se and https://ridetracker.app:
+For two domains on a single machine, e.g. https://nora-soderlund.se and https://ridetracker.app:
 ```json
 {
     "port": 80,
@@ -68,7 +68,7 @@ For two domains on a single server, e.g. https://nora-soderlund.se and https://r
 
 ```
 ### Processes
-To automatically run processes (such as the web servers) on the start of the proxy:
+To automatically run processes (such as the web servers) on the start of the proxy server:
 ```json
 {   
     "processes": [
