@@ -30,7 +30,7 @@ export default class Proxy {
                 const url = new URL(request.url, `http://${request.headers.host}`);
 
                 const method = request.method;
-                const remoteAddress = request.socket.remoteAddress;
+                const remoteAddress = request.headers["cf-connecting-ip"] ?? request.socket.remoteAddress;
 
                 if(!url.hostname || !url.hostname.length) {
                     console.error(`${remoteAddress} ${method} ${url.hostname}: missing HOST header`);
@@ -50,6 +50,10 @@ export default class Proxy {
 
                     return response.end();
                 }
+
+                console.log(`${remoteAddress} ${method} ${url.hostname}: ${route.target}`);
+
+                request.headers["proxy-ip"] = remoteAddress;
 
                 return this.proxy.web(request, response, { target: route.target });
             }
