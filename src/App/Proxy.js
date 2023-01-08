@@ -10,6 +10,10 @@ export default class Proxy {
 
         this.proxy = httpProxy.createProxyServer({});
 
+        this.proxy.on("proxyReq", (proxyReq, request, response, options) => {
+          proxyReq.setHeader("X-Proxy-Connecting-IP", request.headers["CF-Connecting-IP"] ?? request.socket.remoteAddress);
+        });
+
         this.proxy.on("error", (error, request, response) => {
             console.error(error);
 
@@ -30,7 +34,7 @@ export default class Proxy {
                 const url = new URL(request.url, `http://${request.headers.host}`);
 
                 const method = request.method;
-                const remoteAddress = request.headers["cf-connecting-ip"] ?? request.socket.remoteAddress;
+                const remoteAddress = request.headers["CF-Connecting-IP"] ?? request.socket.remoteAddress;
 
                 if(!url.hostname || !url.hostname.length) {
                     console.error(`${remoteAddress} ${method} ${url.hostname}: missing HOST header`);
@@ -52,8 +56,6 @@ export default class Proxy {
                 }
 
                 console.log(`${remoteAddress} ${method} ${url.hostname}: ${route.target}`);
-
-                request.headers["proxy-ip"] = remoteAddress;
 
                 return this.proxy.web(request, response, { target: route.target });
             }
